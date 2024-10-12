@@ -280,170 +280,167 @@ const SearchPage = () => {
 
     return (
         <div className="relative flex flex-col justify-center items-center h-screen bg-gray-900">
-            {/* Error Popup */}
-            {error && <ErrorPopup message={error} />}
-
-            {/* Popup loading animation */}
-            {loading && (
-                <div className="absolute top-0 left-0 flex justify-center items-center w-full h-full bg-black bg-opacity-50 z-50">
-                    <div className="p-5 bg-gray-800 rounded-lg shadow-lg">
-                        <canvas ref={loadingCanvasRef} className="mx-auto"></canvas>
-                        <p className="text-gray-300 text-center mt-2">Loading...</p>
-                    </div>
+        {/* Error Popup */}
+        {error && <ErrorPopup message={error} />}
+    
+        {/* Popup loading animation */}
+        {loading && (
+            <div className="absolute top-0 left-0 flex justify-center items-center w-full h-full bg-black bg-opacity-50 z-50">
+                <div className="p-5 bg-gray-800 rounded-lg shadow-lg">
+                    <canvas ref={loadingCanvasRef} className="mx-auto"></canvas>
+                    <p className="text-gray-300 text-center mt-2">Loading...</p>
                 </div>
-            )}
-
-            {/* Top Login & Register Buttons */}
-            <div className="relative flex flex-col justify-center items-center h-screen bg-gray-900">
-
-                {/* Login and Register Buttons at the Top-Right Corner with same style and animation */}
-                <div className="absolute top-4 right-4 space-x-4">
-                    <button
-                        ref={buttonRef}  // Reusing the same ref for the animation
-                        className="relative bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring overflow-hidden"
-                        style={{ position: "relative", zIndex: 2, color: "#00ff00" }}
-                    >
-                        Login
-                    </button>
-                    <button
-                        ref={buttonRef}  // Reusing the same ref for the animation
-                        className="relative bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring overflow-hidden"
-                        style={{ position: "relative", zIndex: 2, color: "#00ff00" }}
-                    >
-                        Register
-                    </button>
-                </div>
-
-                {/* Error Popup - Positioned at the Bottom-Right Corner */}
-                {error && (
-                    <div className="fixed bottom-4 right-4 bg-red-500 text-white p-4 rounded-lg shadow-lg">
-                        <ErrorPopup message={error} />
-                    </div>
-                )}
             </div>
-
-            {/* Cybersecurity 3D view canvas */}
-            <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full z-0"></canvas>
-
-            {/* Topic Heading */}
-            <div className={`transition-all duration-700 ease-in-out ${moveToTop ? 'mt-6' : 'mt-32'} w-full flex flex-col items-center`}>
-                <h1 className="text-3xl font-bold mb-4 text-center text-white relative z-10">
-                    Cyber Leaks Search Engine
-                </h1>
-
-                {/* Search Input and Dropdown */}
-                <div className={`flex space-x-4 items-start ${moveToTop ? 'mt-2' : 'mt-10'} relative z-10`}>
-                    <div className="relative w-48">
-                        <div
-                            className="px-4 py-3 bg-gray-800 text-gray-300 border border-gray-700 rounded-lg cursor-pointer"
-                            onClick={toggleDropdown}
-                        >
-                            {selectedOption}
-                        </div>
-
-                        <ul
-                            ref={dropdownRef}
-                            className="absolute top-12 left-0 w-full bg-gray-800 border border-gray-700 rounded-lg opacity-0 overflow-hidden"
-                            style={{ display: "none", height: 0, maxHeight: '200px', overflowY: 'auto' }}
-                        >
-                            <li
-                                className="px-4 py-3 text-gray-300 hover:bg-gray-700 cursor-pointer"
-                                onClick={() => handleOptionSelect("email")}
-                            >
-                                Email
-                            </li>
-                            <li
-                                className="px-4 py-3 text-gray-300 hover:bg-gray-700 cursor-pointer"
-                                onClick={() => handleOptionSelect("IP")}
-                            >
-                                IP
-                            </li>
-                            <li
-                                className="px-4 py-3 text-gray-300 hover:bg-gray-700 cursor-pointer"
-                                onClick={() => handleOptionSelect("Username")}
-                            >
-                                Username
-                            </li>
-                            <li
-                                className="px-4 py-3 text-gray-300 hover:bg-gray-700 cursor-pointer"
-                                onClick={() => handleOptionSelect("Password")}
-                            >
-                                Password
-                            </li>
-                            <li
-                                className="px-4 py-3 text-gray-300 hover:bg-gray-700 cursor-pointer"
-                                onClick={() => handleOptionSelect("Phone Number")}
-                            >
-                                Phone Number
-                            </li>
-                            <li
-                                className="px-4 py-3 text-gray-300 hover:bg-gray-700 cursor-pointer"
-                                onClick={() => handleOptionSelect("Address")}
-                            >
-                                Address
-                            </li>
-                        </ul>
-                    </div>
-
-                    {/* Search bar */}
-                    <input
-                        ref={searchBoxRef}
-                        type="text"
-                        placeholder="Search..."
-                        className="px-4 py-3 rounded-lg text-gray-300 bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-neon-green w-64"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                    />
-
-                    {/* Search button */}
-                    <div className="relative">
-                        <button
-                            ref={buttonRef}
-                            className="relative bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring overflow-hidden"
-                            onClick={handleSearch}
-                            style={{ position: "relative", zIndex: 2, color: "#00ff00" }}
-                        >
-                            Search
-                        </button>
-                    </div>
-                </div>
-
-                {/* Local/Global Search Toggle */}
-                <div className="flex items-center mt-4 text-white">
-                    <label className="mr-4">Search Type:</label>
-                    <div className="flex items-center space-x-2">
-                        <label>
-                            <input
-                                type="radio"
-                                name="searchType"
-                                value="local"
-                                checked={searchType === 'local'}
-                                onChange={(e) => setSearchType(e.target.value)}  // Fix: Ensure value is updated correctly
-                                className="mr-2"
-                            />
-                            Local Search
-                        </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name="searchType"
-                                value="global"
-                                checked={searchType === 'global'}
-                                onChange={(e) => setSearchType(e.target.value)}  // Fix: Ensure value is updated correctly
-                                className="mr-2"
-                            />
-                            Global Search
-                        </label>
-                    </div>
-                </div>
-
-            </div>
-
-            {/* Display Search Results */}
-            <div className="mt-10">
-                {results.length > 0 && <SearchResults results={results} />}
-            </div>
+        )}
+    
+        {/* Login and Register Buttons at the Top-Right Corner */}
+        <div className="absolute top-4 right-4 space-x-4">
+            <button
+                ref={buttonRef}  // Reusing the same ref for the animation
+                className="relative bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring overflow-hidden"
+                style={{ position: "relative", zIndex: 2, color: "#00ff00" }}
+            >
+                Login
+            </button>
+            <button
+                ref={buttonRef}  // Reusing the same ref for the animation
+                className="relative bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring overflow-hidden"
+                style={{ position: "relative", zIndex: 2, color: "#00ff00" }}
+            >
+                Register
+            </button>
         </div>
+    
+        {/* Error Popup - Positioned at the Bottom-Right Corner */}
+        {error && (
+            <div className="fixed bottom-4 right-4 bg-red-500 text-white p-4 rounded-lg shadow-lg">
+                <ErrorPopup message={error} />
+            </div>
+        )}
+    
+        {/* Cybersecurity 3D view canvas */}
+        <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full z-0"></canvas>
+    
+        {/* Topic Heading */}
+        <div className={`transition-all duration-700 ease-in-out ${moveToTop ? 'mt-6' : 'mt-32'} w-full flex flex-col items-center`}>
+            <h1 className="text-3xl font-bold mb-4 text-center text-white relative z-10">
+                Cyber Leaks Search Engine
+            </h1>
+    
+            {/* Search Input and Dropdown */}
+            <div className={`flex space-x-4 items-start ${moveToTop ? 'mt-2' : 'mt-10'} relative z-10`}>
+                <div className="relative w-48">
+                    <div
+                        className="px-4 py-3 bg-gray-800 text-gray-300 border border-gray-700 rounded-lg cursor-pointer"
+                        onClick={toggleDropdown}
+                    >
+                        {selectedOption}
+                    </div>
+    
+                    <ul
+                        ref={dropdownRef}
+                        className="absolute top-12 left-0 w-full bg-gray-800 border border-gray-700 rounded-lg opacity-0 overflow-hidden"
+                        style={{ display: "none", height: 0, maxHeight: '200px', overflowY: 'auto' }}
+                    >
+                        <li
+                            className="px-4 py-3 text-gray-300 hover:bg-gray-700 cursor-pointer"
+                            onClick={() => handleOptionSelect("email")}
+                        >
+                            Email
+                        </li>
+                        <li
+                            className="px-4 py-3 text-gray-300 hover:bg-gray-700 cursor-pointer"
+                            onClick={() => handleOptionSelect("IP")}
+                        >
+                            IP
+                        </li>
+                        <li
+                            className="px-4 py-3 text-gray-300 hover:bg-gray-700 cursor-pointer"
+                            onClick={() => handleOptionSelect("Username")}
+                        >
+                            Username
+                        </li>
+                        <li
+                            className="px-4 py-3 text-gray-300 hover:bg-gray-700 cursor-pointer"
+                            onClick={() => handleOptionSelect("Password")}
+                        >
+                            Password
+                        </li>
+                        <li
+                            className="px-4 py-3 text-gray-300 hover:bg-gray-700 cursor-pointer"
+                            onClick={() => handleOptionSelect("Phone Number")}
+                        >
+                            Phone Number
+                        </li>
+                        <li
+                            className="px-4 py-3 text-gray-300 hover:bg-gray-700 cursor-pointer"
+                            onClick={() => handleOptionSelect("Address")}
+                        >
+                            Address
+                        </li>
+                    </ul>
+                </div>
+    
+                {/* Search bar */}
+                <input
+                    ref={searchBoxRef}
+                    type="text"
+                    placeholder="Search..."
+                    className="px-4 py-3 rounded-lg text-gray-300 bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-neon-green w-64"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                />
+    
+                {/* Search button */}
+                <div className="relative">
+                    <button
+                        ref={buttonRef}
+                        className="relative bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring overflow-hidden"
+                        onClick={handleSearch}
+                        style={{ position: "relative", zIndex: 2, color: "#00ff00" }}
+                    >
+                        Search
+                    </button>
+                </div>
+            </div>
+    
+            {/* Local/Global Search Toggle */}
+            <div className="flex items-center mt-4 text-white">
+                <label className="mr-4">Search Type:</label>
+                <div className="flex items-center space-x-2">
+                    <label>
+                        <input
+                            type="radio"
+                            name="searchType"
+                            value="local"
+                            checked={searchType === 'local'}
+                            onChange={(e) => setSearchType(e.target.value)}  // Fix: Ensure value is updated correctly
+                            className="mr-2"
+                        />
+                        Local Search
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="searchType"
+                            value="global"
+                            checked={searchType === 'global'}
+                            onChange={(e) => setSearchType(e.target.value)}  // Fix: Ensure value is updated correctly
+                            className="mr-2"
+                        />
+                        Global Search
+                    </label>
+                </div>
+            </div>
+    
+        </div>
+    
+        {/* Display Search Results */}
+        <div className="mt-10">
+            {results.length > 0 && <SearchResults results={results} />}
+        </div>
+    </div>
+    
     );
 };
 
