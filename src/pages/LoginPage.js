@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const LoginPage = ({ setIsLoggedIn }) => {
     const [username, setUsername] = useState('');
@@ -19,23 +20,24 @@ const LoginPage = ({ setIsLoggedIn }) => {
         }
     }, [error]);
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         if (!username || !password) {
             setError('Username and password are required');
             return;
         }
-
-        // You can add login logic here
-        console.log('Logging in with:', { username, password });
-        // Check credentials
-
-        if (username === 'user' && password === 'userPass') {
-            setIsLoggedIn(true); // Update the login status
-            navigate('/search'); // Navigate to SearchPage on successful login
-        } else {
-            setIsLoggedIn(false); // Update the login status
-            alert('Invalid credentials');
+        try {
+            const response = await axios.post('http://localhost:5001/login', { username, password });
+            if (response.data.status === "success") {
+                setIsLoggedIn(true); // Update the login status
+                navigate('/search'); // Navigate to SearchPage on successful login
+            } else {
+                setIsLoggedIn(false); // Update the login status
+                setError(data.message);
+            }
+        } catch (error) {
+            console.error('Login error:', error.response ? error.response.data : error.message);
+            setError(error.response ? error.response.data.message : error.message);
         }
     };
 

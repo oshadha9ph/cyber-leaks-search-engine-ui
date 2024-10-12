@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const RegisterPage = ({ setIsLoggedIn }) => {
     const [username, setUsername] = useState('');
@@ -34,18 +35,27 @@ const RegisterPage = ({ setIsLoggedIn }) => {
         }
     }, [error]);
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
         if (!username || !password || !email) {
             setError('All fields are required');
             return;
         } else {
-            // You can add register logic here
-            console.log('Register in with:', { username, password, email });
-            setSuccess('User has registered');
-            setIsLoggedIn(false); // Update the login status
-            navigate('/login'); // Navigate to SearchPage on successful login
+            try {
+                const response = await axios.post('http://localhost:5001/register', { username, email, password });
 
+                if (response.data.status === "success") {
+                    setSuccess('User has registered');
+                    setIsLoggedIn(false); // Update the login status
+                    navigate('/login'); // Navigate to SearchPage on successful login
+                } else {
+                    setError(response.data.message);
+                    setIsLoggedIn(false); // Update the login status
+                }
+            } catch (error) {
+                console.error('Login error:', error.response ? error.response.data : error.message);
+                setError(error.response ? error.response.data.message : error.message);
+            }
         }
     };
 
