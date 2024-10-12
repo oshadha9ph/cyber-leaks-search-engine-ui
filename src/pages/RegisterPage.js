@@ -1,11 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const LoginPage = ({ setIsLoggedIn }) => {
+const RegisterPage = ({ setIsLoggedIn }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Clear success message after 3 seconds
+        if (success) {
+            const timer = setTimeout(() => {
+                setSuccess('');
+            }, 3000); // Change 3000 to the desired number of milliseconds
+
+            // Cleanup the timer on component unmount or when success changes
+            return () => clearTimeout(timer);
+        }
+    }, [success]);
 
     useEffect(() => {
         // Clear error message after 5 seconds
@@ -19,23 +34,18 @@ const LoginPage = ({ setIsLoggedIn }) => {
         }
     }, [error]);
 
-    const handleLogin = (e) => {
+    const handleRegister = (e) => {
         e.preventDefault();
-        if (!username || !password) {
-            setError('Username and password are required');
+        if (!username || !password || !email) {
+            setError('All fields are required');
             return;
-        }
-
-        // You can add login logic here
-        console.log('Logging in with:', { username, password });
-        // Check credentials
-
-        if (username === 'user' && password === 'userPass') {
-            setIsLoggedIn(true); // Update the login status
-            navigate('/search'); // Navigate to SearchPage on successful login
         } else {
+            // You can add register logic here
+            console.log('Register in with:', { username, password, email });
+            setSuccess('User has registered');
             setIsLoggedIn(false); // Update the login status
-            alert('Invalid credentials');
+            navigate('/login'); // Navigate to SearchPage on successful login
+
         }
     };
 
@@ -48,18 +58,27 @@ const LoginPage = ({ setIsLoggedIn }) => {
                 </div>
             )}
 
-            {/* Login Form */}
+            {/* Register Form */}
             <div className="w-96 p-8 bg-gray-800 rounded-lg shadow-lg relative z-10">
                 <h1 className="text-3xl font-bold mb-6 text-center text-white">
-                    Login
+                    Register
                 </h1>
-                <form onSubmit={handleLogin}>
+                <form onSubmit={handleRegister}>
                     <div className="mb-4">
                         <label className="block text-gray-300 mb-2">Username</label>
                         <input
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
+                            className="w-full px-4 py-2 rounded-lg text-gray-300 bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-neon-green"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-300 mb-2">Email</label>
+                        <input
+                            type="text"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             className="w-full px-4 py-2 rounded-lg text-gray-300 bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-neon-green"
                         />
                     </div>
@@ -77,7 +96,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
                         className="w-full bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring"
                         style={{ color: "#00ff00" }}
                     >
-                        Login
+                        Submit
                     </button>
                     <button
                         onClick={() => navigate('/')}
@@ -95,4 +114,4 @@ const LoginPage = ({ setIsLoggedIn }) => {
     );
 };
 
-export default LoginPage;
+export default RegisterPage;

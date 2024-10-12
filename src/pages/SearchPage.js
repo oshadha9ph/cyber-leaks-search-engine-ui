@@ -10,7 +10,7 @@ import ErrorPopup from '../components/ErrorPopup'; // Assuming you have an Error
 import { useNavigate } from 'react-router-dom';
 
 
-const SearchPage = () => {
+const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
     const buttonRef = useRef(null);
     const searchBoxRef = useRef(null);
     const dropdownRef = useRef(null);
@@ -26,7 +26,7 @@ const SearchPage = () => {
     const [moveToTop, setMoveToTop] = useState(false); // To control the floating animation
     const [searchType, setSearchType] = useState('local'); // Default to local search
 
-    const navigate  = useNavigate();
+    const navigate = useNavigate();
     const navigateToLogin = () => {
         navigate('/login');
     };
@@ -210,7 +210,6 @@ const SearchPage = () => {
         };
     }, []);
 
-
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
         if (!dropdownOpen) {
@@ -238,52 +237,61 @@ const SearchPage = () => {
 
     // Search API Request
     const handleSearch = useCallback(async () => {
-        let isValid = true;
-
-        // Check for an empty search field
-        if (!query.trim()) {
-            setError('Search field cannot be empty.');
-            setTimeout(() => setError(null), 2000);
-            isValid = false;
-        }
-        // Perform validation based on the selected option
-        else if (selectedOption === 'email' && !validateEmail(query)) {
-            setError('Invalid email format');
-            setTimeout(() => setError(null), 2000);
-            isValid = false;
-        } else if (selectedOption === 'IP' && !validateIP(query)) {
-            setError('Invalid IP address');
-            setTimeout(() => setError(null), 2000);
-            isValid = false;
-        } else if (selectedOption === 'Phone Number' && !validatePhoneNumber(query)) {
-            setError('Invalid phone number format. Make sure it includes the country code.');
-            setTimeout(() => setError(null), 2000);
-            isValid = false;
+        if (!isLoggedIn) {
+            navigate("./login")
         } else {
-            setError(''); // Clear error if valid
-        }
+            let isValid = true;
 
-        if (!isValid) return; // Stop search if validation fails
+            // Check for an empty search field
+            if (!query.trim()) {
+                setError('Search field cannot be empty.');
+                setTimeout(() => setError(null), 2000);
+                isValid = false;
+            }
+            // Perform validation based on the selected option
+            else if (selectedOption === 'email' && !validateEmail(query)) {
+                setError('Invalid email format');
+                setTimeout(() => setError(null), 2000);
+                isValid = false;
+            } else if (selectedOption === 'IP' && !validateIP(query)) {
+                setError('Invalid IP address');
+                setTimeout(() => setError(null), 2000);
+                isValid = false;
+            } else if (selectedOption === 'Phone Number' && !validatePhoneNumber(query)) {
+                setError('Invalid phone number format. Make sure it includes the country code.');
+                setTimeout(() => setError(null), 2000);
+                isValid = false;
+            } else {
+                setError(''); // Clear error if valid
+            }
 
-        setMoveToTop(true); // Move elements to top
-        try {
-            setLoading(true);
-            const res = await searchAPI(query, selectedOption, searchType); // Pass the search type to API
-            setResults(res.data);
-        } catch (err) {
-            logger.error(`Error in search: ${err.message}`);
-            setError('An error occurred while fetching search results.');
-            setTimeout(() => setError(null), 3000);
-        } finally {
-            setLoading(false);
+            if (!isValid) return; // Stop search if validation fails
+
+            setMoveToTop(true); // Move elements to top
+            try {
+                setLoading(true);
+                const res = await searchAPI(query, selectedOption, searchType); // Pass the search type to API
+                setResults(res.data);
+            } catch (err) {
+                logger.error(`Error in search: ${err.message}`);
+                setError('An error occurred while fetching search results.');
+                setTimeout(() => setError(null), 3000);
+            } finally {
+                setLoading(false);
+            }
         }
-    }, [query, selectedOption, searchType]);
+    }, [query, selectedOption, searchType, isLoggedIn]);
 
     // Handle option selection
     const handleOptionSelect = (option) => {
         setSelectedOption(option); // Set the selected option
         toggleDropdown(); // Close the dropdown after selection
     };
+
+    const handleLogout = () => {
+        setIsLoggedIn(false); // Update the login status
+        navigate('/'); // Navigate to SearchPage on logout
+    }
 
     return (
         <div className="relative flex flex-col justify-center items-center h-screen bg-gray-900">
@@ -302,21 +310,31 @@ const SearchPage = () => {
 
             {/* Login and Register Buttons at the Top-Right Corner */}
             <div className="absolute top-4 right-4 space-x-4">
-                <button
-                    ref={buttonRef}  // Reusing the same ref for the animation
-                    className="relative bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring overflow-hidden"
-                    style={{ position: "relative", zIndex: 2, color: "#00ff00" }}
-                    onClick={navigateToLogin}
-                >
-                    Login
-                </button>
-                <button
-                    ref={buttonRef}  // Reusing the same ref for the animation
-                    className="relative bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring overflow-hidden"
-                    style={{ position: "relative", zIndex: 2, color: "#00ff00" }}
-                >
-                    Register
-                </button>
+                {isLoggedIn ? (
+                    <button
+                        onClick={handleLogout}
+                        className="relative bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring overflow-hidden"
+                        style={{ position: "relative", zIndex: 2, color: "#00ff00" }}>
+                        Logout
+                    </button>
+                ) : (
+                    <>
+                        <button
+                            onClick={() => navigate('/login')}
+                            className="relative bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring overflow-hidden"
+                            style={{ position: "relative", zIndex: 2, color: "#00ff00" }}>
+                            Login
+                        </button>
+                        <button
+                            onClick={() => navigate('/register')}
+                            // ref={buttonRef}  // Reusing the same ref for the animation
+                            className="relative bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring overflow-hidden"
+                            style={{ position: "relative", zIndex: 2, color: "#00ff00" }}
+                        >
+                            Register
+                        </button>
+                    </>
+                )}
             </div>
 
             {/* Error Popup - Positioned at the Bottom-Right Corner */}
