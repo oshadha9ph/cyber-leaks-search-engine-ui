@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: . # This builds the Dockerfile in the current directory
+    ports:
+      - '8080:80' # Map host port 8080 to container port 80
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf # Ensure the custom Nginx configuration is used
+    environment:
+      - NODE_ENV=production
