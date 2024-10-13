@@ -258,3 +258,7 @@
         transform: rotate(360deg);
     }
 }
+
+.a-url {
+    color: #00d9ff;
+}

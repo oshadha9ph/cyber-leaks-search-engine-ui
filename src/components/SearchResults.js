@@ -93,13 +93,13 @@ const SearchResults = ({ results, isLocal }) => {
                                             <p><strong>Name:</strong> {result.name || 'Name not found'}</p>
                                             <div>
                                                 <strong>Profile:</strong>
-                                                <a href={result.profile || '#'} target="_blank" rel="noopener noreferrer">
+                                                <a class="a-url" href={result.profile || '#'} target="_blank" rel="noopener noreferrer">
                                                     {result.profile ? ' View Profile' : ' Profile not found'}
                                                 </a>
                                             </div>
                                             <div>
                                                 <strong>Picture:</strong>
-                                                <a href={result.picture || '#'} target="_blank" rel="noopener noreferrer">
+                                                <a class="a-url" href={result.picture || '#'} target="_blank" rel="noopener noreferrer">
                                                     {result.picture ? ' View Picture' : ' Picture not found'}
                                                 </a>
                                             </div>
