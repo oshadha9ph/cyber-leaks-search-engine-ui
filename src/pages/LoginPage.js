@@ -27,7 +27,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
             return;
         }
         try {
-            const response = await axios.post('http://localhost:5001/login', { username, password });
+            const response = await axios.post('http://localhost:5001/login', { username, password });//Update server endpoint
             if (response.data.status === "success") {
                 setIsLoggedIn(true); // Update the login status
                 navigate('/search'); // Navigate to SearchPage on successful login

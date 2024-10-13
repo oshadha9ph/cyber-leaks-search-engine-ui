@@ -2,7 +2,7 @@ import axios from 'axios';
 import logger from './logger';
 
 const BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000'; // Add fallback to hardcoded URL
-const _URL = 'http://localhost:5000'; // Add fallback to hardcoded URL
+const _URL = 'http://localhost:5000'; // Add fallback to hardcoded URL //Update server endpoint
 
 console.log('Base URL:', BASE_URL); // Check if it’s correctly set
 
