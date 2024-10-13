@@ -209,25 +209,52 @@
 
 //* Scrollbar styles for WebKit browsers (Chrome, Safari, etc.) */
 .container::-webkit-scrollbar {
-    width: 10px; /* Width of the scrollbar */
+    width: 10px;
+    /* Width of the scrollbar */
 }
 
 .container::-webkit-scrollbar-track {
-    background: #333; /* Dark track color */
-    border-radius: 10px; /* Round track */
+    background: #333;
+    /* Dark track color */
+    border-radius: 10px;
+    /* Round track */
 }
 
 .container::-webkit-scrollbar-thumb {
-    background: #555; /* Darker thumb color */
-    border-radius: 10px; /* Round thumb */
+    background: #555;
+    /* Darker thumb color */
+    border-radius: 10px;
+    /* Round thumb */
 }
 
 .container::-webkit-scrollbar-thumb:hover {
-    background: #777; /* Thumb color on hover */
+    background: #777;
+    /* Thumb color on hover */
 }
 
 /* For Firefox */
 .container {
-    scrollbar-width: thin; /* Thin scrollbar */
-    scrollbar-color: #555 #333; /* Thumb and track color */
+    scrollbar-width: thin;
+    /* Thin scrollbar */
+    scrollbar-color: #555 #333;
+    /* Thumb and track color */
+}
+
+.loader {
+    border: 8px solid rgba(255, 255, 255, 0.2);
+    border-left-color: #ffffff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

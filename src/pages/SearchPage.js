@@ -6,6 +6,7 @@ import logger from '../services/logger';
 import { validateEmail, validateIP, validatePhoneNumber } from '../utils/validations';
 import ErrorPopup from '../components/ErrorPopup'; // Assuming you have an ErrorPopup component
 import { useNavigate } from 'react-router-dom';
+import { Button, Spinner } from 'react-bootstrap';
 
 
 const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
@@ -312,9 +313,16 @@ const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
             {/* Popup loading animation */}
             {loading && (
                 <div className="absolute top-0 left-0 flex justify-center items-center w-full h-full bg-black bg-opacity-50 z-50">
-                    <div className="p-5 bg-gray-800 rounded-lg shadow-lg">
-                        <canvas ref={loadingCanvasRef} className="mx-auto"></canvas>
-                        <p className="text-gray-300 text-center mt-2">Loading...</p>
+                    <div className="flex flex-col items-center">
+                        <Spinner animation="grow" variant="primary" />
+                        <Spinner animation="grow" variant="secondary" />
+                        <Spinner animation="grow" variant="success" />
+                        <Spinner animation="grow" variant="danger" />
+                        <Spinner animation="grow" variant="warning" />
+                        <Spinner animation="grow" variant="info" />
+                        <Spinner animation="grow" variant="light" />
+                        <Spinner animation="grow" variant="dark" />
+                        <p className="text-gray-300 text-lg text-center mt-3">Loading...</p>
                     </div>
                 </div>
             )}
