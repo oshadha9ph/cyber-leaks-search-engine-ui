@@ -242,33 +242,42 @@ const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
                 setError(''); // Clear error if valid
             }
 
+            let formattedOption;
+            switch (selectedOption) {
+                case "IP":
+                    formattedOption = "ip"
+                    break;
+                case "Username":
+                    formattedOption = "username"
+                    break;
+                case "Password":
+                    formattedOption = "password"
+                    break;
+                case "Address":
+                    formattedOption = "address"
+                    break;
+                case "Phone Number":
+                    formattedOption = "phone"
+                    break;
+                case "Email":
+                    formattedOption = "email"
+                    break;
+            }
+
+
+            if (searchType === "global") {
+                if (formattedOption !== "phone" || formattedOption !== "username" || formattedOption !== "email") {
+                    setError(`Selected type of "${selectedOption}" is not available for Global search at the moment`);
+                    setTimeout(() => setError(null), 2000);
+                    isValid = false;
+                }
+            }
+
             if (!isValid) return; // Stop search if validation fails
 
             setMoveToTop(true); // Move elements to top
 
             try {
-                let formattedOption;
-                switch (selectedOption) {
-                    case "IP":
-                        formattedOption = "ip"
-                        break;
-                    case "Username":
-                        formattedOption = "username"
-                        break;
-                    case "Password":
-                        formattedOption = "password"
-                        break;
-                    case "Address":
-                        formattedOption = "address"
-                        break;
-                    case "Phone Number":
-                        formattedOption = "phone"
-                        break;
-                    case "Email":
-                        formattedOption = "email"
-                        break;
-                }
-
                 setLoading(true);
                 try {
                     const res = await searchAPI(query, formattedOption, searchType); // Pass the search type to API
