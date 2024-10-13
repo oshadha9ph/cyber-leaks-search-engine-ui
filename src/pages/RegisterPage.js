@@ -42,7 +42,7 @@ const RegisterPage = ({ setIsLoggedIn }) => {
             return;
         } else {
             try {
-                const response = await axios.post('http://localhost:5001/register', { username, email, password });//Update server endpoint
+                const response = await axios.post('https://sec-api.knc.lv/register', { username, email, password });//Update server endpoint
 
                 if (response.data.status === "success") {
                     setSuccess('User has registered');
