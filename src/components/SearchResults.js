@@ -91,18 +91,18 @@ const SearchResults = ({ results, isLocal }) => {
                                         <Card.Title style={{ textTransform: 'uppercase' }}>{result.host || 'Host not found'}</Card.Title>
                                         <Card.Text>
                                             <p><strong>Name:</strong> {result.name || 'Name not found'}</p>
-                                            <p>
+                                            <div>
                                                 <strong>Profile:</strong>
                                                 <a href={result.profile || '#'} target="_blank" rel="noopener noreferrer">
                                                     {result.profile ? ' View Profile' : ' Profile not found'}
                                                 </a>
-                                            </p>
-                                            <p>
+                                            </div>
+                                            <div>
                                                 <strong>Picture:</strong>
                                                 <a href={result.picture || '#'} target="_blank" rel="noopener noreferrer">
                                                     {result.picture ? ' View Picture' : ' Picture not found'}
                                                 </a>
-                                            </p>
+                                            </div>
                                         </Card.Text>
                                     </Card.Body>
                                 </>
