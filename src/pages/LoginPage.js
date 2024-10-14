@@ -27,7 +27,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
             return;
         }
         try {
-            const response = await axios.post('https://sec-api.knc.lv/login', { username, password });//Update server endpoint
+            const response = await axios.post('https://sec-api.knc.lv/api/login', { username, password });//Update server endpoint
             if (response.data.status === "success") {
                 setIsLoggedIn(true); // Update the login status
                 navigate('/search'); // Navigate to SearchPage on successful login
