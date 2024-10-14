@@ -207,7 +207,7 @@
     color: #00f336 !important;
 }
 
-//* Scrollbar styles for WebKit browsers (Chrome, Safari, etc.) */
+/* Scrollbar styles for WebKit browsers (Chrome, Safari, etc.) */
 .container::-webkit-scrollbar {
     width: 10px;
     /* Width of the scrollbar */
@@ -261,4 +261,22 @@
 
 .a-url {
     color: #00d9ff;
+}
+
+.main {
+    padding-bottom: 278px;
+}
+
+ul {
+    max-height: 200px;
+    /* Adjust this value to set the maximum height of the dropdown */
+    overflow-y: auto;
+    /* Enables scrolling when content exceeds max height */
+    position: absolute;
+    z-index: 1000;
+    /* background-color: white; */
+    width: 100%;
+    /* Make sure it matches the dropdown width */
+    /* border: 1px solid #ccc; */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
 }

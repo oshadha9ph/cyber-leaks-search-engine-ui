@@ -266,7 +266,7 @@ const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
 
 
             if (searchType === "global") {
-                if (formattedOption !== "phone" || formattedOption !== "username" || formattedOption !== "email") {
+                if (formattedOption === "ip" || formattedOption === "password" || formattedOption === "address") {
                     setError(`Selected type of "${selectedOption}" is not available for Global search at the moment`);
                     setTimeout(() => setError(null), 2000);
                     isValid = false;
@@ -315,7 +315,7 @@ const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
     };
 
     return (
-        <div className="relative flex flex-col justify-center items-center h-screen bg-gray-900">
+        <div className="main relative flex flex-col justify-center items-center h-screen bg-gray-900">
             {/* Error Popup */}
             {error && <ErrorPopup message={error} />}
 
@@ -378,11 +378,11 @@ const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
             {/* Topic Heading */}
             <div className={`transition-all duration-700 ease-in-out ${moveToTop ? 'mt-6' : 'mt-32'} w-full flex flex-col items-center`}>
                 <h1 className="text-3xl font-bold mb-4 text-center text-white relative z-10">
-                    Cyber Leaks Search Engine
+                    Cyber1 Leaks Search Engine
                 </h1>
 
                 {/* Search Input and Dropdown */}
-                <div className={`flex space-x-4 items-start ${moveToTop ? 'mt-2' : 'mt-10'} relative z-10`}>
+                <div className={`flex space-x-4 items-start ${moveToTop ? 'mt-2' : 'mt-10'} relative z-auto`}>
                     <div className="relative w-48">
                         <div
                             className="px-4 py-3 bg-gray-800 text-gray-300 border border-gray-700 rounded-lg cursor-pointer"
