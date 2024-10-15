@@ -378,7 +378,7 @@ const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
             {/* Topic Heading */}
             <div className={`transition-all duration-700 ease-in-out ${moveToTop ? 'mt-6' : 'mt-32'} w-full flex flex-col items-center`}>
                 <h1 className="text-3xl font-bold mb-4 text-center text-white relative z-10">
-                    Cyber1 Leaks Search Engine
+                    Cyber Leaks Search Engine
                 </h1>
 
                 {/* Search Input and Dropdown */}
