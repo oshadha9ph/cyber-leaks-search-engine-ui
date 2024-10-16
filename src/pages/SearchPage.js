@@ -8,9 +8,11 @@ import ErrorPopup from '../components/ErrorPopup'; // Assuming you have an Error
 import { useNavigate } from 'react-router-dom';
 import { Button, Spinner } from 'react-bootstrap';
 import SearchResultDialog from '../components/dialog/SearchResultDialog.js';
+import { Toast } from 'primereact/toast';
 
 
 const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
+    const toast = useRef(null);
     const buttonRef = useRef(null);
     const searchBoxRef = useRef(null);
     const dropdownRef = useRef(null);
@@ -25,6 +27,7 @@ const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
     const [loading, setLoading] = useState(false);
     const [moveToTop, setMoveToTop] = useState(false); // To control the floating animation
     const [searchType, setSearchType] = useState('local'); // Default to local search
+    const [isInit, setIsInit] = useState(true); // Default to local search
 
     const navigate = useNavigate();
     const navigateToLogin = () => {
@@ -32,6 +35,13 @@ const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
     };
 
     const [isDialogOpen, setIsDialogOpen] = useState(false); // State to manage dialog visibility
+
+
+    // useEffect(() => {
+    //     if (!isInit && results && results.length === 0) {
+    //         toast.current.show({ severity: 'warn', summary: 'No Data', detail: 'No results found', life: 3000 });
+    //     }
+    // }, [results]);
 
     // Animation: Search Box, Button, and Dropdown
     useEffect(() => {
@@ -218,7 +228,10 @@ const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
 
     // Search API Request
     const handleSearch = useCallback(async () => {
+        console.log("results ", results)
+        setIsInit(false);
         if (!isLoggedIn) {
+            setIsInit(true);
             navigate("/login");
         } else {
             let isValid = true;
@@ -285,8 +298,24 @@ const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
                 setLoading(true);
                 try {
                     const res = await searchAPI(query, formattedOption, searchType); // Pass the search type to API
+
+                    console.log("api results ", res);
                     setResults(res);
-                    toggleDialog();
+                    if (res) {
+                        if (searchType === "local") {
+                            if (res.results && res.results.length > 0) {
+                                toggleDialog();
+                            }
+                        } else {
+                            if ((res.osint && res.osint.length > 0) || (res.local && res.local.results && res.local.results.length > 0)) {
+                                toggleDialog();
+                            }
+                        }
+                    } else {
+
+                    }
+
+
                 } catch (error) {
                     console.error('error:', error.message);
                     setError(error.response ? error.response.data.message : error.message);
@@ -316,6 +345,7 @@ const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
 
     const handleChange = (event) => {
         setResults([]);
+        setIsInit(true);
         setSearchType(event.target.value);
     };
 
@@ -483,11 +513,34 @@ const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
                     {results && (((!Array.isArray(results) && ((Array.isArray(results.results) && results.results.length > 0)) || ((results.local && Array.isArray(results.local.results) && results.local.results.length > 0) || (Array.isArray(results.global) && results.global.length > 0))))
                         || (Array.isArray(results) && results.length > 0)) && <SearchResults results={results} isLocal={searchType === "local" ? true : false} />}
                 </div> */}
-                <SearchResultDialog
-                    results={results}
-                    isLocal={searchType === "local" ? true : false}
-                    isOpen={isDialogOpen}
-                    onClose={toggleDialog} />
+
+                <>
+
+                    {/* {
+                        (searchType === "local" && results) ? <p className='p1'>results.results.length {results.results ? results.results.length : "test1"}</p> : <>
+                            <p className='p2'>results.osint.length {results && results.osint ? results.osint.length : "test2"}</p>
+                            vmksdmv <p className='p3'>results.local.results.length {results && results.local ? results.local.results.length : "test3"}</p></>
+                    } */}
+
+
+                    <Toast ref={toast} />
+                    {(
+                        (searchType === "local" && results && results.results && results.results.length > 0) ||
+                        (searchType === "global" && results && ((results.osint && results.osint.length > 0) || (results.local && results.local.results && results.local.results.length > 0)))
+                    ) ? (
+                        <div>
+                            <SearchResultDialog
+                                results={results}
+                                isLocal={searchType === "local" ? true : false}
+                                isOpen={isDialogOpen}
+                                onClose={toggleDialog}
+                                title={query}
+                            />
+                        </div>
+                    ) : (
+                        (!isInit && <p className='p3'>No data available</p>)
+                    )}
+                </>
             </div >
         </>
 

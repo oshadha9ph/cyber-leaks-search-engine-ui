@@ -20,7 +20,7 @@ const GlobalDataTable = ({ data }) => {
         }
     };
 
-    const tableList = data.osint.map((x) => {
+    const tableList = data.map((x) => {
         return {
             platform: x.module,
             descriptionCreated: x.front_schemas?.[0]?.timeline.registered ? `Created Account (${x.front_schemas[0].module})` : "----",
@@ -51,8 +51,17 @@ const GlobalDataTable = ({ data }) => {
         }
     };
 
+
     const imageBodyTemplate = (data) => {
-        return <img src={`${data.platformImage}`} alt={`${data.platformImage}`} className="w-6rem shadow-2 border-round" />;
+        const defaultImagePath = "/assets/default.png"; // path relative to 'public' folder
+
+        return (
+            <img
+                src={data.platformImage || defaultImagePath}
+                alt="Platform"
+                className="w-6rem shadow-2 border-round"
+            />
+        );
     };
 
     const statusBodyTemplate = (data) => {

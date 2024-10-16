@@ -59,7 +59,6 @@ export const registerUser = async (username, email, password) => {
 
         database.ref(`users/${user.uid}`).once('value').then((snapshot) => {
             const data = snapshot.val();
-            console.log("user data ", data);
         });
 
         console.log('User registered successfully');

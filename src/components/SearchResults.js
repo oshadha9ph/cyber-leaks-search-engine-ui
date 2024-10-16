@@ -19,7 +19,7 @@ const SearchResults = ({ results, isLocal }) => {
     } else {
         const newLocal = [];
         const newGlobal = [];
-        results.global.forEach(result => {
+        results.osint.forEach(result => {
             const obj = {
                 host: result.module,
                 name: result.spec_format[0].name ? result.spec_format[0].name.value : "",

@@ -49,9 +49,9 @@ const GlobalData = ({ globalData = [] }) => {
             )} */}
 
             {isGlobal ? (
-                globalData.global && globalData.global.length > 0 && (
+                globalData.osint && globalData.osint.length > 0 && (
                     <div>
-                        <GlobalDataTable data={globalData.global} />
+                        <GlobalDataTable data={globalData.osint} />
                     </div>
                 )
             ) : (
