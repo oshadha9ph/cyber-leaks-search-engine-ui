@@ -2,20 +2,20 @@ import React from 'react';
 import { Card, Row, Col } from 'react-bootstrap';
 
 const SearchResults = ({ results, isLocal }) => {
-    console.log("result ", results)
     const newResults = [];
 
     if (isLocal) {
-        results.results.forEach(result => {
-            const obj = {
-                host: result._source.host.name,
-                name: result._source.firstname + " " + result._source.lastname,
-                address: result._source.address_1,
-                company: result._source.company,
-                created: result._source["@timestamp"],
-            }
-            newResults.push(obj);
+
+        const localTableList = results.results.map((x) => {
+            return {
+                platform: x._source.host.name,
+                name: x._source.firstname + " " + x._source.lastname,
+                address: x._source.address_1,
+                Type: "Local",
+                created: x._source["@timestamp"],
+            };
         });
+        
     } else {
         const newLocal = [];
         const newGlobal = [];

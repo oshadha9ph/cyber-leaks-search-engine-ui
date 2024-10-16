@@ -1,0 +1,106 @@
+.data-table-main {
+    overflow: auto;
+    /* width: 85%; */
+    max-height: 380px;
+    margin-top: 20px;
+    scrollbar-color: #555 #333;
+}
+
+.card {
+    background: #00e062;
+    border-radius: 0;
+}
+
+/* Customize DataTable in dark theme */
+/* Dark theme for the datatable */
+.p-datatable {
+    background-color: #1a1a1a;
+    /* Dark background */
+    color: #ffffff;
+    /* Light text color */
+}
+
+.p-datatable .p-column-header {
+    background-color: #333333;
+    /* Dark header background */
+    color: #ffffff;
+    /* Header text color */
+}
+
+
+.p-datatable .p-datatable-tbody tr {
+    background-color: #1a1a1a;
+    font-size: smaller;
+    /* Row background color */
+}
+
+.p-datatable .p-datatable-tbody tr.p-row-odd {
+    background-color: #252525;
+    /* Alternate row color */
+}
+
+.p-datatable .p-datatable-tbody td {
+    color: #ffffff;
+    /* Cell text color */
+}
+
+.p-datatable .p-datatable-tbody td:hover {
+    background-color: #444444;
+    /* Row hover color */
+}
+
+.p-paginator {
+    background-color: #333333;
+    /* Dark paginator background */
+    color: #ffffff;
+    /* Paginator text color */
+}
+
+.p-paginator button {
+    background-color: #444444;
+    /* Paginator button background */
+    color: #ffffff;
+    /* Button text color */
+}
+
+.p-paginator button:hover {
+    background-color: #555555;
+    /* Button hover color */
+}
+
+th {
+    background: black;
+    color: white;
+}
+
+img {
+    border-radius: 5px;
+    width: 30px;
+}
+
+/* For small screens */
+@media (max-width: 600px) {
+    .p-datatable .p-column {
+        min-width: 100%;
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* For tablets and medium screens */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .p-datatable .p-column {
+        min-width: 50%;
+        width: 50%;
+        max-width: 50%;
+    }
+}
+
+/* For large screens */
+@media (min-width: 1025px) {
+    .p-datatable .p-column {
+        min-width: auto;
+        width: auto;
+        max-width: auto;
+    }
+}

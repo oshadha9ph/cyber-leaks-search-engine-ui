@@ -7,6 +7,7 @@ import { validateEmail, validateIP, validatePhoneNumber } from '../utils/validat
 import ErrorPopup from '../components/ErrorPopup'; // Assuming you have an ErrorPopup component
 import { useNavigate } from 'react-router-dom';
 import { Button, Spinner } from 'react-bootstrap';
+import SearchResultDialog from '../components/dialog/SearchResultDialog.js';
 
 
 const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
@@ -29,6 +30,8 @@ const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
     const navigateToLogin = () => {
         navigate('/login');
     };
+
+    const [isDialogOpen, setIsDialogOpen] = useState(false); // State to manage dialog visibility
 
     // Animation: Search Box, Button, and Dropdown
     useEffect(() => {
@@ -212,6 +215,7 @@ const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
     const toggleDropdown = () => {
         setDropdownOpen(prev => !prev);
     };
+
     // Search API Request
     const handleSearch = useCallback(async () => {
         if (!isLoggedIn) {
@@ -282,6 +286,7 @@ const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
                 try {
                     const res = await searchAPI(query, formattedOption, searchType); // Pass the search type to API
                     setResults(res);
+                    toggleDialog();
                 } catch (error) {
                     console.error('error:', error.message);
                     setError(error.response ? error.response.data.message : error.message);
@@ -314,162 +319,179 @@ const SearchPage = ({ isLoggedIn, setIsLoggedIn }) => {
         setSearchType(event.target.value);
     };
 
+    const toggleDialog = () => {
+        setIsDialogOpen(!isDialogOpen); // Toggle the dialog visibility
+    };
+
     return (
-        <div className="main relative flex flex-col justify-center items-center h-screen bg-gray-900">
-            {/* Error Popup */}
-            {error && <ErrorPopup message={error} />}
+        <>
 
-            {/* Popup loading animation */}
-            {loading && (
-                <div className="absolute top-0 left-0 flex justify-center items-center w-full h-full bg-black bg-opacity-50 z-50">
-                    <div className="flex flex-col items-center">
-                        <Spinner animation="grow" variant="primary" />
-                        <Spinner animation="grow" variant="secondary" />
-                        <Spinner animation="grow" variant="success" />
-                        <Spinner animation="grow" variant="danger" />
-                        <Spinner animation="grow" variant="warning" />
-                        <Spinner animation="grow" variant="info" />
-                        <Spinner animation="grow" variant="light" />
-                        <Spinner animation="grow" variant="dark" />
-                        <p className="text-gray-300 text-lg text-center mt-3">Loading...</p>
+            <div className="main relative flex flex-col justify-center items-center h-screen bg-gray-900">
+                {/* Error Popup */}
+                {error && <ErrorPopup message={error} />}
+
+                {/* Popup loading animation */}
+                {loading && (
+                    <div className="absolute top-0 left-0 flex justify-center items-center w-full h-full bg-black bg-opacity-50 z-50">
+                        <div className="flex flex-col items-center">
+                            <Spinner animation="grow" variant="primary" />
+                            <Spinner animation="grow" variant="secondary" />
+                            <Spinner animation="grow" variant="success" />
+                            <Spinner animation="grow" variant="danger" />
+                            <Spinner animation="grow" variant="warning" />
+                            <Spinner animation="grow" variant="info" />
+                            <Spinner animation="grow" variant="light" />
+                            <Spinner animation="grow" variant="dark" />
+                            <p className="text-gray-300 text-lg text-center mt-3">Loading...</p>
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
 
-            {/* Login and Register Buttons at the Top-Right Corner */}
-            <div className="absolute top-4 right-4 space-x-4">
-                {isLoggedIn ? (
-                    <button
-                        onClick={handleLogout}
-                        className="relative bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring overflow-hidden"
-                        style={{ position: "relative", zIndex: 2, color: "#00ff00" }}>
-                        Logout
-                    </button>
-                ) : (
-                    <>
+                {/* Login and Register Buttons at the Top-Right Corner */}
+                <div className="absolute top-4 right-4 space-x-4">
+                    {isLoggedIn ? (
                         <button
-                            onClick={() => navigate('/login')}
+                            onClick={handleLogout}
                             className="relative bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring overflow-hidden"
                             style={{ position: "relative", zIndex: 2, color: "#00ff00" }}>
-                            Login
+                            Logout
                         </button>
-                        <button
-                            onClick={() => navigate('/register')}
-                            // ref={buttonRef}  // Reusing the same ref for the animation
-                            className="relative bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring overflow-hidden"
-                            style={{ position: "relative", zIndex: 2, color: "#00ff00" }}
-                        >
-                            Register
-                        </button>
-                    </>
-                )}
-            </div>
-
-            {/* Error Popup - Positioned at the Bottom-Right Corner */}
-            {error && (
-                <div className="fixed bottom-4 right-4 bg-red-500 text-white p-4 rounded-lg shadow-lg">
-                    <ErrorPopup message={error} />
+                    ) : (
+                        <>
+                            <button
+                                onClick={() => navigate('/login')}
+                                className="relative bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring overflow-hidden"
+                                style={{ position: "relative", zIndex: 2, color: "#00ff00" }}>
+                                Login
+                            </button>
+                            <button
+                                onClick={() => navigate('/register')}
+                                // ref={buttonRef}  // Reusing the same ref for the animation
+                                className="relative bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring overflow-hidden"
+                                style={{ position: "relative", zIndex: 2, color: "#00ff00" }}
+                            >
+                                Register
+                            </button>
+                        </>
+                    )}
                 </div>
-            )}
 
-            {/* Cybersecurity 3D view canvas */}
-            <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full z-0"></canvas>
+                {/* Error Popup - Positioned at the Bottom-Right Corner */}
+                {error && (
+                    <div className="fixed bottom-4 right-4 bg-red-500 text-white p-4 rounded-lg shadow-lg">
+                        <ErrorPopup message={error} />
+                    </div>
+                )}
 
-            {/* Topic Heading */}
-            <div className={`transition-all duration-700 ease-in-out ${moveToTop ? 'mt-6' : 'mt-32'} w-full flex flex-col items-center`}>
-                <h1 className="text-3xl font-bold mb-4 text-center text-white relative z-10">
-                    Cyber Leaks Search Engine
-                </h1>
+                {/* Cybersecurity 3D view canvas */}
+                <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full z-0"></canvas>
 
-                {/* Search Input and Dropdown */}
-                <div className={`flex space-x-4 items-start ${moveToTop ? 'mt-2' : 'mt-10'} relative z-auto`}>
-                    <div className="relative w-48">
-                        <div
-                            className="px-4 py-3 bg-gray-800 text-gray-300 border border-gray-700 rounded-lg cursor-pointer"
-                            onClick={toggleDropdown}
-                        >
-                            {selectedOption}
+                {/* Topic Heading */}
+                <div className={`transition-all duration-700 ease-in-out ${moveToTop ? 'mt-6' : 'mt-32'} w-full flex flex-col items-center`}>
+                    <h1 className="text-3xl font-bold mb-4 text-center text-white relative z-10">
+                        Cyber Leaks Search Engine
+                    </h1>
+
+                    {/* Search Input and Dropdown */}
+                    <div className={`flex space-x-4 items-start ${moveToTop ? 'mt-2' : 'mt-10'} relative z-auto`}>
+                        <div className="relative w-48">
+                            <div
+                                className="px-4 py-3 bg-gray-800 text-gray-300 border border-gray-700 rounded-lg cursor-pointer"
+                                onClick={toggleDropdown}
+                            >
+                                {selectedOption}
+                            </div>
+
+                            <ul
+                                ref={dropdownRef}
+                                className={`absolute top-12 left-0 w-full bg-gray-800 border border-gray-700 rounded-lg transition-all duration-300 ${dropdownOpen ? 'opacity-100' : 'opacity-0 overflow-hidden'}`}
+                                style={{ zIndex: 11 }}
+                            >
+                                {['Email', 'IP', 'Username', 'Password', 'Phone Number', 'Address'].map(option => (
+                                    <li
+                                        key={option}
+                                        className="px-4 py-3 text-gray-300 hover:bg-gray-700 cursor-pointer"
+                                        onClick={() => handleOptionSelect(option)}
+                                    >
+                                        {option}
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
 
-                        <ul
-                            ref={dropdownRef}
-                            className={`absolute top-12 left-0 w-full bg-gray-800 border border-gray-700 rounded-lg transition-all duration-300 ${dropdownOpen ? 'opacity-100' : 'opacity-0 overflow-hidden'}`}
-                        >
-                            {['Email', 'IP', 'Username', 'Password', 'Phone Number', 'Address'].map(option => (
-                                <li
-                                    key={option}
-                                    className="px-4 py-3 text-gray-300 hover:bg-gray-700 cursor-pointer"
-                                    onClick={() => handleOptionSelect(option)}
-                                >
-                                    {option}
-                                </li>
-                            ))}
-                        </ul>
+                        {/* Search bar and button */}
+                        {/* ... search bar and button elements */}
+
+                        {/* Search bar */}
+                        <input
+                            ref={searchBoxRef}
+                            type="text"
+                            placeholder="Search..."
+                            className="px-4 py-3 rounded-lg text-gray-300 bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-neon-green w-64"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                        />
+
+                        {/* Search button */}
+                        <div className="relative">
+                            <button
+                                ref={buttonRef}
+                                className="relative bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring overflow-hidden"
+                                onClick={handleSearch}
+                                style={{ position: "relative", zIndex: 2, color: "#00ff00" }}
+                            >
+                                Search
+                            </button>
+                        </div>
                     </div>
 
-                    {/* Search bar and button */}
-                    {/* ... search bar and button elements */}
-
-                    {/* Search bar */}
-                    <input
-                        ref={searchBoxRef}
-                        type="text"
-                        placeholder="Search..."
-                        className="px-4 py-3 rounded-lg text-gray-300 bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-neon-green w-64"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                    />
-
-                    {/* Search button */}
-                    <div className="relative">
-                        <button
-                            ref={buttonRef}
-                            className="relative bg-blue-900 text-neon-green px-8 py-3 rounded-lg shadow-lg focus:outline-none focus:ring overflow-hidden"
-                            onClick={handleSearch}
-                            style={{ position: "relative", zIndex: 2, color: "#00ff00" }}
-                        >
-                            Search
-                        </button>
+                    {/* Local/Global Search Toggle */}
+                    <div className="flex items-center mt-4 text-white z-10">
+                        <label className="mr-4">Search Type:</label>
+                        <div className="flex items-center space-x-2">
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="searchType"
+                                    value="local"
+                                    checked={searchType === 'local'}
+                                    onChange={handleChange}  // Fix: Ensure value is updated correctly
+                                    className="mr-2"
+                                />
+                                Local Search
+                            </label>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="searchType"
+                                    value="global"
+                                    checked={searchType === 'global'}
+                                    onChange={handleChange}  // Fix: Ensure value is updated correctly
+                                    className="mr-2"
+                                />
+                                Global Search
+                            </label>
+                        </div>
                     </div>
+
                 </div>
 
-                {/* Local/Global Search Toggle */}
-                <div className="flex items-center mt-4 text-white z-10">
-                    <label className="mr-4">Search Type:</label>
-                    <div className="flex items-center space-x-2">
-                        <label>
-                            <input
-                                type="radio"
-                                name="searchType"
-                                value="local"
-                                checked={searchType === 'local'}
-                                onChange={handleChange}  // Fix: Ensure value is updated correctly
-                                className="mr-2"
-                            />
-                            Local Search
-                        </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name="searchType"
-                                value="global"
-                                checked={searchType === 'global'}
-                                onChange={handleChange}  // Fix: Ensure value is updated correctly
-                                className="mr-2"
-                            />
-                            Global Search
-                        </label>
-                    </div>
-                </div>
 
-            </div>
 
-            {/* Display Search Results */}
-            <div className="mt-10  result-main">
-                {results && (((!Array.isArray(results) && ((Array.isArray(results.results) && results.results.length > 0)) || ((results.local && Array.isArray(results.local.results) && results.local.results.length > 0) || (Array.isArray(results.global) && results.global.length > 0))))
-                    || (Array.isArray(results) && results.length > 0)) && <SearchResults results={results} isLocal={searchType === "local" ? true : false} />}
-            </div>
-        </div>
+                {/* Display Search Results */}
+                {/* <div className="mt-10  result-main">
+                    {results && (((!Array.isArray(results) && ((Array.isArray(results.results) && results.results.length > 0)) || ((results.local && Array.isArray(results.local.results) && results.local.results.length > 0) || (Array.isArray(results.global) && results.global.length > 0))))
+                        || (Array.isArray(results) && results.length > 0)) && <SearchResults results={results} isLocal={searchType === "local" ? true : false} />}
+                </div> */}
+                <SearchResultDialog
+                    results={results}
+                    isLocal={searchType === "local" ? true : false}
+                    isOpen={isDialogOpen}
+                    onClose={toggleDialog} />
+            </div >
+        </>
+
+
 
     );
 };

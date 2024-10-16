@@ -2,14 +2,12 @@ import axios from 'axios';
 import logger from './logger';
 
 const BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000'; // Add fallback to hardcoded URL
-const _URL = 'https://sec-api.knc.lv'; // Add fallback to hardcoded URL //Update server endpoint
+const _URL = 'http://localhost:5000'; // Add fallback to hardcoded URL //Update server endpoint
 
 console.log('Base URL:', BASE_URL); // Check if it’s correctly set
 
 export const searchAPI = async (query, queryType, searchType) => {
     try {
-        console.log("searchType ", searchType)
-        console.log(query, " ", queryType)
         const isLocal = searchType === "local" ? true : false;
         let response;
         let url;

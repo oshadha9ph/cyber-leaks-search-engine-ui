@@ -5,6 +5,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// PrimeReact core CSS
+import 'primereact/resources/primereact.min.css';
+// PrimeReact theme (choose one of the available themes)
+import 'primereact/resources/themes/saga-blue/theme.css';  // Replace 'saga-blue' with the theme you prefer
+// PrimeIcons (for icon support)
+import 'primeicons/primeicons.css';
+
 // ErrorBoundary component to catch runtime errors
 class ErrorBoundary extends React.Component {
   constructor(props) {

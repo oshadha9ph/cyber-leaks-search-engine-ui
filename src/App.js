@@ -6,7 +6,7 @@ import RegisterPage from './pages/RegisterPage';
 import './styles/search.css'; // Import global styles
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   return (
     <Router>

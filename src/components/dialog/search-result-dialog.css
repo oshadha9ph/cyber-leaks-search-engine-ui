@@ -1,0 +1,11 @@
+.main-search-dialog {
+    background: #2d333f !important;
+    /* padding-bottom: 30px; */
+    width: 85%;
+}
+
+.close-btn {
+    margin-right: 20px;
+    margin-top: 20px;
+    font-size: xx-large;
+}

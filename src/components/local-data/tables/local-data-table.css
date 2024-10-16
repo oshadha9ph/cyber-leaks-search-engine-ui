@@ -1,0 +1,70 @@
+.data-table-main {
+    overflow: auto;
+    /* width: 85%; */
+    max-height: 380px;
+    margin-top: 20px;
+    scrollbar-color: #555 #333;
+}
+
+/* Customize DataTable in dark theme */
+/* Dark theme for the datatable */
+.p-datatable {
+    background-color: #1a1a1a;
+    /* Dark background */
+    color: #ffffff;
+    /* Light text color */
+}
+
+.p-datatable .p-column-header {
+    background-color: #333333;
+    /* Dark header background */
+    color: #ffffff;
+    /* Header text color */
+}
+
+
+.p-datatable .p-datatable-tbody tr {
+    background-color: #1a1a1a;
+    /* Row background color */
+}
+
+.p-datatable .p-datatable-tbody tr.p-row-odd {
+    background-color: #252525;
+    /* Alternate row color */
+}
+
+.p-datatable .p-datatable-tbody td {
+    color: #ffffff;
+    /* Cell text color */
+}
+
+.p-datatable .p-datatable-tbody td:hover {
+    background-color: #444444;
+    /* Row hover color */
+}
+
+.p-paginator {
+    background-color: #333333;
+    /* Dark paginator background */
+    color: #ffffff;
+    /* Paginator text color */
+}
+
+.p-paginator button {
+    background-color: #444444;
+    /* Paginator button background */
+    color: #ffffff;
+    /* Button text color */
+}
+
+.p-paginator button:hover {
+    background-color: #555555;
+    /* Button hover color */
+}
+
+
+
+th {
+    background: black;
+    color: white;
+}
